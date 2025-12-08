@@ -1,9 +1,11 @@
 #!/bin/bash
 directoryused=$1
-name=$(basename "$directoryused" tgz)
+name=$(basename "$directoryused" .tgz)
 here=$(pwd)
 scratch=$(mktemp -d)
-tar -xzf "$Directoryused" -c "$scratch"
+tar -xzf "$directoryused" -C "$scratch"
 grep -rl "DELETE ME!" "$scratch/$name" | xargs rm -f
 cd "$scratch" || exit
-tar -czf "$here/cleaned_$directoryused" "$name"
+tar -czf "$here/cleaned_$(basename "$directoryused")" "$name"
+cd "$here" || exit
+rm -rf "$scratch"
